@@ -29,9 +29,9 @@ def main():
     matricula = encontrar_matricula(soup)
 
     if matricula:
-        print("Matrícula:", matricula)
+        print("Matrícula encontrada:", matricula)
     else:
-        print("No se encontró la matrícula en el archivo 'Inbox'.")
+        print("No se encontró la matrícula")
 
 if __name__ == "__main__":
     main()
