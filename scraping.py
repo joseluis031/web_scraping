@@ -1,12 +1,37 @@
-import requests
+from bs4 import BeautifulSoup
 
-file_path = 'C:/Users/usuario/Downloads/CC17-PCO-03_AnalisisCorreos/thundebird/ccnsqul8.default/Mail/pop-mail.outlook.com'
+def leer_contenido_archivo(ruta_archivo):
+    with open(ruta_archivo, 'r', encoding='utf-8') as file:
+        return file.read()
 
-try:
-    with open(file_path, 'r', encoding='utf-8') as file:
-        content = file.read()
-    print(content)
-except FileNotFoundError:
-    print(f"El archivo en la ruta '{file_path}' no fue encontrado.")
-except Exception as e:
-    print(f"Ocurrió un error al intentar leer el archivo: {e}")
+def encontrar_matricula(soup):
+    # Encontrar la línea que contiene la matrícula
+    matricula_line = [line for line in soup.get_text().split('\n') if 'Matricula' in line]
+
+    if matricula_line:
+        # Extraer la matrícula
+        matricula = matricula_line[0].split(':')[-1].strip()
+        return matricula
+    else:
+        return None
+
+def main():
+    # Ruta del archivo 'Inbox'
+    ruta_inbox = 'Inbox'
+
+    # Leer el contenido del archivo
+    inbox_content = leer_contenido_archivo(ruta_inbox)
+
+    # Parsear el contenido del archivo con BeautifulSoup
+    soup = BeautifulSoup(inbox_content, 'html.parser')
+
+    # Encontrar la matrícula
+    matricula = encontrar_matricula(soup)
+
+    if matricula:
+        print("Matrícula:", matricula)
+    else:
+        print("No se encontró la matrícula en el archivo 'Inbox'.")
+
+if __name__ == "__main__":
+    main()
